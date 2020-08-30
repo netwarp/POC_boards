@@ -8,7 +8,6 @@ This is inspired by 4chan, 2chan, 8ch... \
 ## Installation
 - Nodejs 
 - PGSQL
-- Redis
 
 ## Configuration
 - create the database with psql
@@ -16,6 +15,7 @@ This is inspired by 4chan, 2chan, 8ch... \
 - cp env.example.json env.json
 - npm install
 - npx nodemon index.js
+- npx rollup -c -w
 
 ## Licence
 WTFPL
