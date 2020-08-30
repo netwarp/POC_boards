@@ -1,17 +1,20 @@
-const { Sequelize } = require('sequelize');
+const env = require('./env')
+const express = require('express')
+const bodyParser = require('body-parser')
+const app = express()
+const port = env.app.port
+const cookieParser = require('cookie-parser')
+const router = require('./routes/web')
 
-const sequelize = new Sequelize('board', 'postgres', 'root', {
-  host: 'localhost',
-  dialect: 'postgres'
-});
+app.use(express.static('public'))
 
-async function main() {
-	try {
-  await sequelize.authenticate();
-  console.log('Connection has been established successfully.');
-} catch (error) {
-  console.error('Unable to connect to the database:', error);
-}
-}
+app.use(bodyParser.urlencoded({
+  extended: false
+}))
 
-main()
+app.use(bodyParser.json())
+//app.use(cookieParser('toto'))
+
+app.use('/', router)
+
+app.listen(port)
