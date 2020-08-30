@@ -1,0 +1,22 @@
+form {
+	padding: 1rem;
+
+	.form-group {
+		display: flex;
+		flex-direction: column;
+		margin-bottom: 1.6rem;
+	}
+
+	input, textarea, select {
+		display: inline-block;
+		width: 100%;
+		padding: .5rem;
+		background: #fff;
+		border-radius: .2rem;
+		border: 1px solid #ced4da;
+	}
+
+	.checkbox {
+		width: inherit;
+	}
+}

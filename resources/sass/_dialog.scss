@@ -1,0 +1,30 @@
+dialog {
+	position: fixed;
+	top: 5rem;
+	text-align: center;
+	border-radius: 1rem;
+	padding: 5rem;
+	z-index: 44;
+
+	.close {
+		position: absolute;
+		top: 2rem;
+		right: 2rem;
+
+		padding: 0.4rem 0.8rem;
+		border: 1px solid #101214;
+		cursor: pointer;
+		background: $blue;
+		color: #fff;
+		font-weight: bold;
+
+		&:hover {
+			background: $blue2;
+		}
+	}
+
+	.dialog-title {
+		font-size: 1.6rem;
+		margin-top: 2rem;
+	}
+}

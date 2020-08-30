@@ -1,0 +1,23 @@
+footer {
+	background: #212529;
+	color: #fff;
+	padding: 3rem 1rem;
+	font-size: .9rem;
+	display: flex;
+	box-sizing: border-box;
+
+	.col {
+		padding: 0 1rem;
+		box-sizing: border-box;
+	}
+
+
+	ul {
+		li {
+			list-style-type: none;
+		}
+	}
+	a {
+		color: #fff;
+	}
+}
