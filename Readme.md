@@ -10,5 +10,13 @@ This is inspired by 4chan, 2chan, 8ch... \
 - PGSQL
 - Redis
 
-# Licence
+## Configuration
+- create the database with psql
+- copy the file main.sql in psql 
+- cp env.example.json env.json
+- npm install
+- npx nodemon index.js
+
+## Licence
 WTFPL
+
