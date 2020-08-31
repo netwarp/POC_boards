@@ -1,5 +1,7 @@
 const env = require('../env')
-const Sequelize = require('sequelize');
+const crypto = require('crypto')
+const bcrypt = require('bcrypt')
+const Sequelize = require('sequelize')
 const sequelize = new Sequelize(env.db.database, env.db.username, env.db.password, {
     host: 'localhost',
     dialect: 'postgres'
@@ -22,10 +24,22 @@ const User = sequelize.define('user', {
     password: {
         type: Sequelize.STRING,
         allowNull: false,
+        set(value) {
+            this.setDataValue('password', bcrypt.hashSync(value, 12))
+        }
     },
     verify_token: {
         type: Sequelize.STRING,
         allowNull: true,
+        defaultValue(value) {
+            /*
+            const id = this.getDataValue('id')
+            let token = id
+            token += '-'
+            token += crypto.randomBytes(16).toString('hex')
+            */
+            return 'token-4564565656564'
+        }
     },
     is_ban: {
         type: Sequelize.BOOLEAN,
