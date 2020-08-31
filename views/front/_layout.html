@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/app.css">
+    <link href="/images/favicon.jpg" rel="icon"  type="image/x-icon" />
+    <title>{{ head_title }}</title>
+    {% block css %}
+    {% endblock %}
+</head>
+<body>
+<header>
+    {% set color =  ['#f00', '#0f0', '#0ff', '#ff0', '#F0F'] | random %}
+    <nav>
+        <div class="logo-space">
+            <a href="/" style="font-size: 2rem; color: {{ color }}">YourSite</a>
+        </div>
+        <ul>
+            <li><a href="/search">Search</a></li>
+            <li><a href="/boards">Boards</a></li>
+            <li><a href="/threads">Threads</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/rules">Rules</a></li>
+            <li><a href="/register">Register</a></li>
+            <li><a href="/login">Login</a></li>
+        </ul>
+    </nav>
+</header>
+<main>
+    {% if success.length %}
+        <div class="message success">
+            {{ success }}
+        </div>
+    {% endif %}
+
+    {% block content %}
+    {% endblock %}
+</main>
+
+<footer>
+    <div class="col">
+        <ul>
+            <li><a href="/search">Search</a></li>
+            <li><a href="/boards">Boards</a></li>
+            <li><a href="/threads">Threads</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/rules">Rules</a></li>
+            <li><a href="/support">Support</a></li>
+        </ul>
+    </div>
+    <div class="col">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci distinctio dolorem excepturi optio quisquam ut voluptate voluptatum. Ad adipisci animi dolorem ipsum, mollitia saepe. Deleniti ea placeat quibusdam rerum soluta!
+    </div>
+    <div class="col"></div>
+    {% block js %}
+    {% endblock %}
+</footer>
+<div id="backdrop"></div>
+</body>
+</html>

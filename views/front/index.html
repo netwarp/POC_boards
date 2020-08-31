@@ -1,0 +1,119 @@
+{% extends './_layout.html' %}
+
+{% block content %}
+<div class="container">
+    <section>
+        <div class="card">
+            <div class="card-body">
+                <div class="text-center">
+                    <h2>Boards</h2>
+                    <div>
+                        <a href="/boards/create" class="button">Create Board</a>
+                    </div>
+                </div>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Title</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for row in boards %}
+                    <tr>
+                        {% for board in row %}
+                        <td>
+                            <a href="/boards/{{ board.slug }}?board_id={{ board.id }}">{{ board.title }}</a>
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <div class="text-center">
+                    <a href="/boards">More boards</a>
+                </div>
+                {% if true %}
+                <picture class="ad" >
+                    <source srcset="/images/misc/ad-demo.svg" media="(min-width: 768px)">
+                    <img src="/images/misc/ad-demo.svg" alt="">
+                </picture>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="card">
+            <div class="card-body">
+                <h2 class="text-center">Threads</h2>
+
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Board</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for row in threads %}
+                    <tr>
+                        {% for thread in row %}
+                        <td>
+                            <a href="/threads/{{ thread.id }}">{{ thread.title }}</a>
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <div class="text-center">
+                    <a href="/threads">More threads</a>
+                </div>
+                {% if true %}
+                <picture class="ad" >
+                    <source srcset="/images/misc/ad-demo.svg" media="(min-width: 768px)">
+                    <img src="/images/misc/ad-demo.svg" alt="">
+                </picture>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="card">
+            <div class="card-body">
+                <h2 class="text-center">Stats</h2>
+                <table>
+                    <tbody>
+                    <tr>
+                        <td>Total views</td>
+                        <td>{{ counter or '' }}</td>
+                    </tr>
+                    <tr>
+                        <td>Total boards</td>
+                        <td>{{ boards_total or '' }}</td>
+                    </tr>
+                    <tr>
+                        <td>Total threads</td>
+                        <td>{{ threads_total or '' }}</td>
+                    </tr>
+                    <tr>
+                        <td>Total posts</td>
+                        <td>{{ posts_total or '' }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                {% if true %}
+                <picture class="ad" >
+                    <source srcset="/images/misc/ad-demo.svg" media="(min-width: 768px)">
+                    <img src="/images/misc/ad-demo.svg" alt="">
+                </picture>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+
