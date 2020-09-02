@@ -31,6 +31,10 @@
         <div class="message success">
             {{ success }}
         </div>
+    {% elif errors.length %}
+        <div class="message error">
+            {{ errors }}
+        </div>
     {% endif %}
 
     {% block content %}
