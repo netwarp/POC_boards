@@ -76,6 +76,38 @@ main {
 .wrapper {
 	display: flex;
 	flex-wrap: wrap;
+
+	#ul-menu {
+		background: #212529;
+		height: 100vh;
+		margin: 0;
+		padding: 0;
+	}
+
+	#ul-menu li {
+		list-style-type: none;
+	}
+
+	#ul-menu a {
+		display: block;
+		padding: 1rem;
+		color: #fff;
+	}
+
+	#ul-menu a.active {
+		background: #306775;
+	}
+
+	#ul-menu a:hover {
+		background: #273c75;
+		color: #fff;
+		text-decoration: none;
+	}
+
+	#content-wrapper {
+		background: #f6f6f6;
+		padding: 2rem;
+	}
 }
 
 .paginate-wrapper {
