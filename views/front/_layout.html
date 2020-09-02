@@ -21,8 +21,12 @@
             <li><a href="/threads">Threads</a></li>
             <li><a href="/contact">Contact</a></li>
             <li><a href="/rules">Rules</a></li>
-            <li><a href="/register">Register</a></li>
-            <li><a href="/login">Login</a></li>
+            {% if auth %}
+                <li><a href="/profile" style="background: #2b6cb0">Profile</a></li>
+            {% else %}
+                <li><a href="/register">Register</a></li>
+                <li><a href="/login">Login</a></li>
+            {% endif %}
         </ul>
     </nav>
 </header>
