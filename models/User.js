@@ -31,15 +31,11 @@ const User = sequelize.define('user', {
     verify_token: {
         type: Sequelize.STRING,
         allowNull: true,
-        defaultValue(value) {
-            /*
-            const id = this.getDataValue('id')
-            let token = id
-            token += '-'
-            token += crypto.randomBytes(16).toString('hex')
-            */
-            return 'token-4564565656564'
-        }
+    },
+    activated: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
     },
     is_ban: {
         type: Sequelize.BOOLEAN,

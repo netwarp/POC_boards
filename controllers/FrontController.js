@@ -27,7 +27,9 @@ exports.getRegister = async (request, response) => {
     const head_title = 'Register'
 
     await response.render('front/register.html', {
-        head_title
+        head_title,
+        success: request.flash('success'),
+        errors: request.flash('errors'),
     })
 }
 
@@ -51,12 +53,21 @@ exports.postRegister = async (request, response) => {
         name,
         email,
         password,
-        verify_token: token,
+        verify_token: '',
         status: 'user'
+    }).catch((error) => {
+        request.flash('errors', error.parent.detail)
+        return response.redirect('/register')
     })
-    let token = user.id
+
+    let token = user.id.toString()
     token += '-'
-    token +=  crypto.randomBytes(16).toString('hex')
+    token += crypto.randomBytes(16).toString('hex')
+
+    user.verify_token = token
+
+    await user.save()
+
     let html = await fs.readFile("views/mails/register.html", "utf8");
 
     html = nunjucks.renderString(html, {
@@ -71,8 +82,6 @@ exports.postRegister = async (request, response) => {
         text: 'Testing some Mailgun awesomeness!',
         html,
     }
-
-
 
     await mg.messages().send(data, function (error, body) {
         console.log(body)
@@ -103,6 +112,36 @@ exports.getSearch = async (request, response) => {
 
 }
 
+exports.verifyToken = async (request, response) => {
+    let complete_token = request.params.token
+    complete_token = complete_token.split('-')
+
+    const id = parseInt(complete_token[0])
+    const token = complete_token[1]
+
+    const user = await User.findByPk(id)
+
+    if (! user) {
+        request.flash('errors', 'there is an error')
+        return await response.redirect('/')
+    }
+
+    if (user.activated) {
+        request.flash('errors', 'this link has expired')
+        return await response.redirect('/')
+    }
+
+    user.activated = true
+    await user.save()
+
+    request.flash('success', 'your account is active')
+
+    await response.redirect('/')
+}
+
+exports.login = (request, response) => {
+    response.json('ok')
+}
 
 
 exports.test = async (request, response) => {
@@ -111,7 +150,7 @@ exports.test = async (request, response) => {
     response.redirect('/')
 
      */
-    const user = await User.create({
+    const user = await User.build({
         name: 'bob',
         email: 'bob@bob2.com',
         password: 'rezrze',
@@ -122,3 +161,5 @@ exports.test = async (request, response) => {
 }
 
 'toto1111111@yopmail.com'
+'truncate table users'
+'select * from users'
