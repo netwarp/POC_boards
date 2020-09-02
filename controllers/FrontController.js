@@ -139,8 +139,20 @@ exports.verifyToken = async (request, response) => {
     await response.redirect('/')
 }
 
-exports.login = (request, response) => {
-    response.json('ok')
+exports.login = async (request, response) => {
+    const head_title = 'Login'
+
+    console.log(request.session)
+
+    await response.render('front/login.html', {
+        head_title,
+        success: request.flash('success'),
+        errors: request.flash('errors'),
+    })
+}
+
+exports.postLogin = async (request, response) => {
+    response.json('e')
 }
 
 

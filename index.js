@@ -39,7 +39,14 @@ app.use(bodyParser.urlencoded({
 
 app.use(bodyParser.json())
 
+
+/**
+ * Routes entrypoints
+ */
+const profile_router = require('./routes/profile');
+
 app.use('/', router)
+app.use('/profile', profile_router)
 
 app.listen(port, () => {
     console.log('Server starting')
