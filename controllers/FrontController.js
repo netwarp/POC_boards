@@ -25,7 +25,6 @@ exports.index = async (request, response) => {
 
     const boards_total = boards.count
 
-
     boards = await Helpers.Array.chunk(boards.rows, 2);
 
     const head_title = 'Board'
@@ -41,7 +40,14 @@ exports.index = async (request, response) => {
 }
 
 exports.image = async (request, response) => {
+    const type = await request.params.type;
+    const folder = await request.params.folder;
+    const image = await request.params.image;
 
+    const path = await `storage/app/${type}/${folder}/${image}`
+
+    let data = await fs.readFile(path)
+    response.end(data)
 }
 
 exports.getRegister = async (request, response) => {
@@ -190,7 +196,7 @@ exports.test = async (request, response) => {
         password: 'rezrze',
         status: 'user',
     })
-    console.log(user)
+    response.json(user)
 
 }
 
