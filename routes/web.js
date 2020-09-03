@@ -3,6 +3,7 @@ const router = express.Router()
 const fileUpload = require('express-fileupload')
 const FrontController = require('../controllers/FrontController')
 const BoardsController = require('../controllers/Front/BoardsController')
+const ThreadsController = require('../controllers/Front/ThreadsController')
 
 const { body, validationResult } = require('express-validator');
 
@@ -25,7 +26,9 @@ router.get('/images/:type/:folder/:image', FrontController.image)
 router.get('/boards', BoardsController.index)
 router.get('/boards/create', BoardsController.create)
 router.post('/boards/create', BoardsController.store)
-router.get('/boards/:slug', BoardsController.show)
+
+router.get('/boards/:slug', ThreadsController.index)
+
 
 /**
  * Auth

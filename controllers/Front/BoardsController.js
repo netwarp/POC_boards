@@ -4,9 +4,29 @@ const fsPromises = fs.promises
 const crypto = require('crypto')
 
 exports.index = async (request, response) => {
-    const boards = Board.findAll()
+    const head_title = 'Boards'
 
-    response.json(boards)
+    const limit = 100
+    let offset = 0
+    if (request.query.page) {
+        const page = request.query.page
+        offset = page * limit
+    }
+
+    const {docs, pages, total} = await Board.paginate({
+        order: [
+            ['id', 'desc']
+        ],
+        offset,
+        paginate: limit
+    })
+
+    await response.render('front/boards/index.html', {
+        boards: docs,
+        pages,
+        total,
+        head_title,
+    });
 }
 
 exports.create = async (request, response) => {

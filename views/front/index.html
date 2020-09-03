@@ -19,25 +19,25 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for row in boards %}
-                    <tr>
-                        {% for board in row %}
-                        <td>
-                            <a href="/boards/{{ board.slug }}?board_id={{ board.id }}">{{ board.title }}</a>
-                        </td>
+                        {% for row in boards %}
+                            <tr>
+                                {% for board in row %}
+                                <td>
+                                    <a href="/boards/{{ board.slug }}?board_id={{ board.id }}">{{ board.title }}</a>
+                                </td>
+                                {% endfor %}
+                            </tr>
                         {% endfor %}
-                    </tr>
-                    {% endfor %}
                     </tbody>
                 </table>
                 <div class="text-center">
                     <a href="/boards">More boards</a>
                 </div>
                 {% if true %}
-                <picture class="ad" >
-                    <source srcset="/images/misc/ad-demo.svg" media="(min-width: 768px)">
-                    <img src="/images/misc/ad-demo.svg" alt="">
-                </picture>
+                    <picture class="ad">
+                        <source srcset="/images/misc/ad-demo.svg" media="(min-width: 768px)">
+                        <img src="/images/misc/ad-demo.svg" alt="">
+                    </picture>
                 {% endif %}
             </div>
         </div>

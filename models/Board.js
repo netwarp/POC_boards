@@ -4,8 +4,10 @@ const sequelize = new Sequelize(env.db.database, env.db.username, env.db.passwor
     host: 'localhost',
     dialect: 'postgres'
 })
+const sequelizePaginate = require('sequelize-paginate')
 
 const User = require('./User')
+//const Threads = require('./Th')
 
 const Board = sequelize.define('board', {
     id: {
@@ -46,5 +48,7 @@ const Board = sequelize.define('board', {
     sequelize,
     modelName: 'Board'
 })
+
+sequelizePaginate.paginate(Board);
 
 module.exports = Board
