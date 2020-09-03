@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
+const fileUpload = require('express-fileupload')
 const FrontController = require('../controllers/FrontController')
+const BoardsController = require('../controllers/Front/BoardsController')
 
 const { body, validationResult } = require('express-validator');
 
@@ -9,12 +11,21 @@ require('../config/passport')(passport);
 router.use(passport.initialize());
 router.use(passport.session());
 
-
-
+router.use(fileUpload({
+    limits: {
+        // in MB
+        fileSize: 2 * 1024 * 1024
+    }
+}))
 
 
 router.get('/', FrontController.index)
 router.get('/images/:type/:folder/:image', FrontController.image)
+
+router.get('/boards', BoardsController.index)
+router.get('/boards/create', BoardsController.create)
+router.post('/boards/create', BoardsController.store)
+router.get('/boards/:slug', BoardsController.show)
 
 /**
  * Auth

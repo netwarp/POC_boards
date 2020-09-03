@@ -5,15 +5,36 @@ const apiKey = env.mail.apiKey
 const crypto = require('crypto')
 const fs = require('fs').promises
 const nunjucks = require('nunjucks')
+const Helpers = require('./Helpers')
 const User = require('../models/User')
+const Board = require('../models/Board')
 
 const { body, validationResult } = require('express-validator');
 
+// TODO register + login condition auth
+
 exports.index = async (request, response) => {
+
+    const limit = 40
+    let boards = await Board.findAndCountAll({
+        limit,
+        order: [
+            ['id', 'desc']
+        ]
+    });
+
+    const boards_total = boards.count
+
+
+    boards = await Helpers.Array.chunk(boards.rows, 2);
+
     const head_title = 'Board'
 
     await response.render('front/index.html', {
         head_title,
+        boards,
+        boards_total,
+        auth: request.isAuthenticated(),
         success: request.flash('success'),
         errors: request.flash('errors'),
     })
@@ -28,6 +49,7 @@ exports.getRegister = async (request, response) => {
 
     await response.render('front/register.html', {
         head_title,
+        auth: request.isAuthenticated(),
         success: request.flash('success'),
         errors: request.flash('errors'),
     })
@@ -142,10 +164,10 @@ exports.verifyToken = async (request, response) => {
 exports.login = async (request, response) => {
     const head_title = 'Login'
 
-    console.log(request.session)
 
     await response.render('front/login.html', {
         head_title,
+        auth: request.isAuthenticated(),
         success: request.flash('success'),
         errors: request.flash('errors'),
     })
