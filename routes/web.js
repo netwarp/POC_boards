@@ -21,14 +21,15 @@ router.use(fileUpload({
 
 
 router.get('/', FrontController.index)
-router.get('/images/:type/:folder/:image', FrontController.image)
+router.get('/images', FrontController.image)
 
 router.get('/boards', BoardsController.index)
 router.get('/boards/create', BoardsController.create)
 router.post('/boards/create', BoardsController.store)
 
 router.get('/boards/:slug', ThreadsController.index)
-
+router.get('/boards/:board_slug/:board_id/create', ThreadsController.create)
+router.post('/boards/:board_slug/:board_id/create', ThreadsController.store)
 
 /**
  * Auth

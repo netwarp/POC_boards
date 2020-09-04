@@ -40,11 +40,8 @@ exports.index = async (request, response) => {
 }
 
 exports.image = async (request, response) => {
-    const type = await request.params.type;
-    const folder = await request.params.folder;
-    const image = await request.params.image;
-
-    const path = await `storage/app/${type}/${folder}/${image}`
+    let path = request.query.path
+    path = `storage/app/${path}`
 
     let data = await fs.readFile(path)
     response.end(data)
