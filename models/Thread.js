@@ -6,11 +6,9 @@ const sequelize = new Sequelize(env.db.database, env.db.username, env.db.passwor
 })
 const sequelizePaginate = require('sequelize-paginate')
 
-const User = require('./User')
-const Thread = require('./Thread');
-//const Post = require('./Post');
+const User = require('./User');
 
-const Board = sequelize.define('board', {
+const Thread = sequelize.define('thread', {
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -24,17 +22,28 @@ const Board = sequelize.define('board', {
         type: Sequelize.STRING,
         allowNull: false
     },
-    description: {
-        type: Sequelize.TEXT,
+    content: {
+        type: Sequelize.STRING,
         allowNull: false
     },
     folder: {
         type: Sequelize.STRING,
         allowNull: false
     },
+    image: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
     image_path: {
         type: Sequelize.STRING,
         allowNull: false
+    },
+    board_id: {
+        type: Sequelize.INTEGER,
+        references: {
+            model: User,
+            key: 'id'
+        }
     },
     user_id: {
         type: Sequelize.INTEGER,
@@ -47,21 +56,9 @@ const Board = sequelize.define('board', {
     updatedAt: {type: Sequelize.DATE, field: 'updated_at'},
 }, {
     sequelize,
-    modelName: 'Board'
+    modelName: 'Thread'
 })
 
-Board.hasMany(Thread, {
-    foreignKey: 'board_id',
-    foreignKeyConstraint: true
-});
-/*
-Board.hasMany(Post, {
-    foreignKey: 'board_id',
-    foreignKeyConstraint: true
-});
+sequelizePaginate.paginate(Thread);
 
- */
-
-sequelizePaginate.paginate(Board);
-
-module.exports = Board
+module.exports = Thread
