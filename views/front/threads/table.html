@@ -1,0 +1,33 @@
+{% extends '../_layout.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <h1 class="text-center">Threads list</h1>
+            <table>
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for thread in threads %}
+                <tr>
+                    <td><a href="/threads/{{ thread.id }}">{{ thread.title }}</a></td>
+                    <td><a href="/threads/{{ thread.id }}">{{ thread.content }}</a></td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="paginate-wrapper">
+                {% for i in range(0, paginates) %}
+                <a href="/threads?page={{i}}" class="button">{{ i }}</a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
