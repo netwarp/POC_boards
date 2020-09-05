@@ -1,0 +1,129 @@
+{% extends '../_layout.html' %}
+
+{% block content %}
+
+<style>
+    .container-2 {
+        display: flex;
+    }
+
+    .section-posts {
+        width: 60%;
+    }
+
+    .section-add-post {
+        width: 40%;
+    }
+
+    .container-2 section {
+        margin: 2rem;
+    }
+
+    @media screen and (max-width: 992px) {
+        .container-2 {
+            flex-direction: column;
+        }
+
+        .container-2 section {
+            width: 100%;
+            margin: 2rem 0;
+        }
+    }
+</style>
+
+<div class="container-2">
+    <section class="section-posts">
+        {% if board_slug %}
+        <div>
+            <a href="/boards/{{ board_slug }}" class="button">&larr; Back to board</a>
+        </div>
+        {% endif %}
+
+        <h1 class="title">All posts in the thread</h1>
+        <div class="card">
+            <div class="card-header">
+                <div>
+                    Anonymous
+                </div>
+                <div>
+                    <time datetime="{{ thread.created_at }}">{{ thread.created_at }}</time>
+                </div>
+                <div>
+                    <button class="button-small report" data-id="{{ thread['_id'] }}">Report</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="card-content">
+                    <img src="/images?path={{ thread.image_path }}" alt="image board" style="width: 120px;">
+                    <div class="text">
+                        {{ thread.content | striptags(true) | escape | nl2br }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            {% for post in thread.posts %}
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        {{ post.author }}
+                    </div>
+                    <div>
+                        <time datetime="{{ post.created_at }}">{{ post.created_at }}</time>
+                    </div>
+                    <div>
+                        <button class="button-small report" data-id="{{ post['_id'] }}">Report</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {% if post.image %}
+                    <div>
+                        <img src="{{ post.image_path }}/{{ post.image }}" alt="">
+                    </div>
+                    {% endif %}
+                    <div>
+                        {{ post.content | striptags(true) | escape | nl2br }}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="section-add-post">
+        <h2 class="title">Add post</h2>
+        <div class="card">
+            <div class="card-body">
+                <form action="/posts/{{ thread.id }}" class="post" method="post" enctype="multipart/form-data">
+
+                    <input type="hidden" name="board_slug" value="{{ board_slug }}" readonly>
+                    <input type="hidden" name="thread_folder" value="{{ thread.folder }}" readonly>
+
+                    <div class="form-group">
+                        <input type="text" name="author" value="Anonyme" maxlength="100">
+                    </div>
+
+                    <div class="form-group">
+                        <input type="file" name="image" accept="image/x-png,image/gif,image/jpeg">
+                    </div>
+
+                    <div class="form-group">
+                        <small id="chars_left"></small>
+                        <textarea name="content" rows="20" required maxlength="1000"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label><input type="checkbox" name="rules" class="checkbox">I have read and accepted <a href="/rules">the rules</a></label>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="block">Send</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+{% endblock %}

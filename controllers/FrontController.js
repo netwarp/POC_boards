@@ -8,6 +8,7 @@ const nunjucks = require('nunjucks')
 const Helpers = require('./Helpers')
 const User = require('../models/User')
 const Board = require('../models/Board')
+const dd = require('dump-die')
 
 const { body, validationResult } = require('express-validator');
 
@@ -101,7 +102,7 @@ exports.postRegister = async (request, response) => {
     })
 
     const data = {
-        from: 'toto1111111@yopmail.com',
+        from: 'toto1111111@yopmail.com', // replace from: your email in mailgun dashboard
         to: email,
         subject: 'Welcome, Please confirm your email',
         text: 'Testing some Mailgun awesomeness!',
@@ -167,17 +168,122 @@ exports.verifyToken = async (request, response) => {
 exports.login = async (request, response) => {
     const head_title = 'Login'
 
-
     await response.render('front/login.html', {
         head_title,
         auth: request.isAuthenticated(),
         success: request.flash('success'),
         errors: request.flash('errors'),
+        error: request.flash('error'),
     })
 }
 
 exports.postLogin = async (request, response) => {
     response.json('e')
+}
+
+exports.forgotPassword = async (request, response) => {
+    response.render('front/forget-password.html', {
+        auth: request.isAuthenticated(),
+        error: request.flash('error')
+    })
+}
+
+exports.postForgotPassword = async (request, response) => {
+    const email = request.body.email
+    const user = await User.findOne({
+        where: {
+            email
+        }
+    })
+
+    if (! user) {
+        request.flash('error', 'User not exists')
+        return response.redirect('forgot-password')
+    }
+
+    const token = user.verify_token
+
+    let html = await fs.readFile("views/mails/reset-password.html", "utf8");
+    html = nunjucks.renderString(html, {
+        token,
+        domain: env.app.domain
+    })
+
+
+    const data = {
+        from: 'toto1111111@yopmail.com', // replace from: your email in mailgun dashboard
+        to: email,
+        subject: 'Welcome, Please confirm your email',
+        text: 'Testing some Mailgun awesomeness!',
+        html,
+    }
+
+    const mg = mailgun({
+        apiKey,
+        domain
+    })
+
+    await mg.messages().send(data, function (error, body) {
+        console.log(body)
+    })
+}
+
+exports.reset = async (request, response) => {
+
+    let token = request.query.token
+    let id =token.split('-')[0]
+    id = parseInt(id)
+
+    const user = await User.findByPk(id)
+
+    if (user.verify_token !== token ) {
+        return response.json('nope')
+    }
+
+    response.render('front/reset-password.html', {
+        error: request.flash('error')
+    })
+}
+
+exports.postReset = async (request, response) => {
+
+    let token = request.query.token
+    let id =token.split('-')[0]
+    id = parseInt(id)
+
+    const user = await User.findByPk(id)
+
+    if (! user) {
+        return response.json('no user')
+    }
+
+    if (user.verify_token !== token ) {
+        return response.json('nope')
+    }
+
+    const password = request.body.password
+    const password_confirmation = request.body.password_confirmation
+
+    let error = ''
+
+    if ( ! password.length || ! password_confirmation.length) {
+        error = 'Password and confirmation are required'
+    }
+
+    if (password !== password_confirmation) {
+        error = 'Password and password confirmation not match'
+    }
+
+    if (error.length) {
+        request.flash('error', error)
+        return response.redirect('/forgot-password/reset')
+    }
+
+    user.password = password
+    await user.save()
+
+    request.flash('success', 'password updated')
+    return await response.redirect('/')
 }
 
 

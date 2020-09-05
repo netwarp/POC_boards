@@ -4,6 +4,7 @@ const fileUpload = require('express-fileupload')
 const FrontController = require('../controllers/FrontController')
 const BoardsController = require('../controllers/Front/BoardsController')
 const ThreadsController = require('../controllers/Front/ThreadsController')
+const PostsController = require('../controllers/Front/PostsController')
 
 const { body, validationResult } = require('express-validator');
 
@@ -30,6 +31,9 @@ router.post('/boards/create', BoardsController.store)
 router.get('/boards/:slug', ThreadsController.index)
 router.get('/boards/:board_slug/:board_id/create', ThreadsController.create)
 router.post('/boards/:board_slug/:board_id/create', ThreadsController.store)
+
+router.get('/boards/:board_slug/:thread_id', PostsController.index)
+router.post('/posts/:thread_id', PostsController.store)
 
 /**
  * Auth
@@ -61,6 +65,12 @@ router.post('/login', passport.authenticate('local', {
 }), (request, response) => {
     console.log(`after login: ${request.isAuthenticated()}`)
 })
+
+router.get('/forgot-password', FrontController.forgotPassword)
+router.post('/forgot-password', FrontController.postForgotPassword)
+
+router.get('/forgot-password/reset', FrontController.reset)
+router.post('/forgot-password/reset', FrontController.postReset)
 
 router.get('/logout', (request, response) => {
     request.logout()
