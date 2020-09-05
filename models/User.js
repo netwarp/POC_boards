@@ -7,6 +7,12 @@ const sequelize = new Sequelize(env.db.database, env.db.username, env.db.passwor
     dialect: 'postgres'
 })
 
+const sequelizePaginate = require('sequelize-paginate')
+
+const Board = require('./Board');
+const Thread = require('./Thread');
+const Post = require('./Post');
+
 const User = sequelize.define('user', {
     id: {
         type: Sequelize.INTEGER,
@@ -50,6 +56,22 @@ const User = sequelize.define('user', {
 }, {
     sequelize,
     modelName: 'User'
+})
+sequelizePaginate.paginate(User);
+
+User.hasMany(Board, {
+    foreignKey: 'user_id',
+    foreignKeyConstraint: true
+})
+
+User.hasMany(Thread, {
+    foreignKey: 'user_id',
+    foreignKeyConstraint: true
+})
+
+User.hasMany(Post, {
+    foreignKey: 'user_id',
+    foreignKeyConstraint: true
 })
 
 module.exports = User

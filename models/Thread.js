@@ -6,7 +6,9 @@ const sequelize = new Sequelize(env.db.database, env.db.username, env.db.passwor
 })
 const sequelizePaginate = require('sequelize-paginate')
 
-const User = require('./User');
+const User = require('./User')
+const Board = require('./Board')
+const Post = require('./Post')
 
 const Thread = sequelize.define('thread', {
     id: {
@@ -41,7 +43,7 @@ const Thread = sequelize.define('thread', {
     board_id: {
         type: Sequelize.INTEGER,
         references: {
-            model: User,
+            model: Board,
             key: 'id'
         }
     },
@@ -57,6 +59,11 @@ const Thread = sequelize.define('thread', {
 }, {
     sequelize,
     modelName: 'Thread'
+})
+
+Thread.hasMany(Post, {
+    foreignKey: 'thread_id',
+    foreignKeyConstraint: true
 })
 
 sequelizePaginate.paginate(Thread);

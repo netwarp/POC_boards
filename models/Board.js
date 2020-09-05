@@ -8,7 +8,7 @@ const sequelizePaginate = require('sequelize-paginate')
 
 const User = require('./User')
 const Thread = require('./Thread');
-//const Post = require('./Post');
+const Post = require('./Post');
 
 const Board = sequelize.define('board', {
     id: {
@@ -54,13 +54,11 @@ Board.hasMany(Thread, {
     foreignKey: 'board_id',
     foreignKeyConstraint: true
 });
-/*
+
 Board.hasMany(Post, {
     foreignKey: 'board_id',
     foreignKeyConstraint: true
-});
-
- */
+})
 
 sequelizePaginate.paginate(Board);
 
