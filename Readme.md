@@ -16,6 +16,8 @@ This is inspired by 4chan, 2chan, 8ch... \
 - npm install
 - npx nodemon index.js
 - npx rollup -c -w
+- create a account on mailgun
+- edit .env
 
 ## Licence
 WTFPL
