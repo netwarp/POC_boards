@@ -29,7 +29,8 @@ exports.index = async (request, response) => {
 
     response.render('front/threads/index.html', {
         board,
-        threads: rows
+        threads: rows,
+        auth: request.isAuthenticated(),
     })
 }
 
@@ -45,6 +46,7 @@ exports.create = async (request, response) => {
 }
 
 exports.store = async (request, response) => {
+    const auth = request.isAuthenticated()
     const limit = 1000 * 1000
 
     let board_id = request.params.board_id
@@ -72,7 +74,10 @@ exports.store = async (request, response) => {
 
     data.image = name
 
-    await fsPromises.mkdir(`storage/app/boards/${board_folder}/${thread_folder}`, {recursive: true});
+    const path = `storage/app/boards/${board_folder}/${thread_folder}`
+
+    await fsPromises.mkdir(path, {recursive: true});
+
 
     const image_path = `boards/${board_folder}/${thread_folder}/${name}`
     await image.mv(`storage/app/${image_path}`)

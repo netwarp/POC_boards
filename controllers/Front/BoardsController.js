@@ -26,6 +26,7 @@ exports.index = async (request, response) => {
         pages,
         total,
         head_title,
+        auth: request.isAuthenticated(),
     });
 }
 
@@ -39,6 +40,7 @@ exports.create = async (request, response) => {
 }
 
 exports.store = async (request, response) => {
+    const auth = request.isAuthenticated()
     const limit = 1000 * 1000
     const folder = await crypto.randomBytes(12).toString('hex')
     const image = await request.files.image
