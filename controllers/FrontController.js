@@ -8,6 +8,7 @@ const nunjucks = require('nunjucks')
 const Helpers = require('./Helpers')
 const User = require('../models/User')
 const Board = require('../models/Board')
+const Thread = require('../models/Thread')
 const dd = require('dump-die')
 
 const { body, validationResult } = require('express-validator');
@@ -17,16 +18,29 @@ const { body, validationResult } = require('express-validator');
 exports.index = async (request, response) => {
 
     const limit = 40
+
     let boards = await Board.findAndCountAll({
         limit,
         order: [
             ['id', 'desc']
         ]
-    });
+    })
 
+    boards = await Helpers.Array.chunk(boards.rows, 2)
     const boards_total = boards.count
 
-    boards = await Helpers.Array.chunk(boards.rows, 2);
+
+    let threads = await Thread.findAndCountAll({
+        limit,
+        order: [
+            ['id', 'desc']
+        ]
+    })
+    threads = await Helpers.Array.chunk(threads.rows, 2)
+
+    const thread_total = threads.count
+
+
 
     const head_title = 'Board'
 
@@ -34,6 +48,8 @@ exports.index = async (request, response) => {
         head_title,
         boards,
         boards_total,
+        threads,
+        thread_total,
         auth: request.isAuthenticated(),
         success: request.flash('success'),
         errors: request.flash('errors'),
@@ -118,25 +134,19 @@ exports.postRegister = async (request, response) => {
     await response.redirect('/')
 }
 
-exports.getContact = async (request, response) => {
-
+exports.contact = async (request, response) => {
+    response.render('front/contact.html')
 }
 
 exports.rules = async (request, response) => {
-
+    response.render('front/rules.html')
 }
 
-exports.support = async (request, response) => {
-
-}
 
 exports.error = async (request, response) => {
 
 }
 
-exports.getSearch = async (request, response) => {
-
-}
 
 exports.verifyToken = async (request, response) => {
     let complete_token = request.params.token
@@ -285,6 +295,7 @@ exports.postReset = async (request, response) => {
     request.flash('success', 'password updated')
     return await response.redirect('/')
 }
+
 
 
 exports.test = async (request, response) => {

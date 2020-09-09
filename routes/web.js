@@ -77,6 +77,9 @@ router.get('/logout', (request, response) => {
     response.redirect('/')
 })
 
+router.get('/contact', FrontController.contact)
+router.get('/rules', FrontController.rules)
+
 router.get('/test', FrontController.test)
 
 module.exports = router
